@@ -12,6 +12,8 @@ curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-ti
 # define pacman packages
 pacman_packages="openssl-1.1 kmod openvpn privoxy bind-tools gnu-netcat ipcalc wireguard-tools openresolv unzip"
 
+#Don't update filesystem, bug with buildx, see https://github.com/moby/buildkit/issues/1267
+sed -i -e 's~#IgnorePkg.*~IgnorePkg = filesystem*~g' '/etc/pacman.conf'
 # install pre-reqs
 pacman -Syu --needed $pacman_packages --noconfirm
 
